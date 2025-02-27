@@ -18,6 +18,12 @@ class _AuthPageState extends State<AuthPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset(
+              "images/logo.png",
+              height: MediaQuery.of(context).size.height * 0.2,
+              width: MediaQuery.of(context).size.width * 0.7,
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.2),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.85,
               child: TextField(
@@ -72,6 +78,9 @@ class _AuthPageState extends State<AuthPage> {
               width: MediaQuery.of(context).size.width * 0.85,
               alignment: Alignment.centerRight,
               child: InkWell(
+                onTap: () {
+                  Navigator.popAndPushNamed(context, '/rec');
+                },
                 child: Text(
                   "Forgot password?",
                   style: TextStyle(

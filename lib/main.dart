@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mess_scuf/auth.dart';
+import 'package:mess_scuf/chats.dart';
+import 'package:mess_scuf/contacts.dart';
+import 'package:mess_scuf/recovery.dart';
 import 'package:mess_scuf/reg.dart';
 
 void main() {
@@ -43,6 +46,9 @@ class AppTheme extends StatelessWidget {
       routes: {
         '/': (context) => AuthPage(),
         '/reg': (context) => RegPage(),
+        '/rec': (context) => RecoveryPage(),
+        '/chats': (context) => ChatsPage(),
+        '/contacts': (context) => ContactsPage(),
       },
     );
   }

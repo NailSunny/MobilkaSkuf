@@ -1,0 +1,2 @@
+C:/Users/gaifu/Project/mess_scuf/MobilkaSkuf/android/app/.cxx/Debug/163014x6/x86/CMakeFiles/edit_cache.dir
+C:/Users/gaifu/Project/mess_scuf/MobilkaSkuf/android/app/.cxx/Debug/163014x6/x86/CMakeFiles/rebuild_cache.dir
