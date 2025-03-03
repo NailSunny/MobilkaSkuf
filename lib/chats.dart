@@ -122,7 +122,9 @@ class _ChatsPageState extends State<ChatsPage> {
                               ),
                       ],
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.popAndPushNamed(context, '/chatPage');
+                    },
                   );
                 },
               ),
