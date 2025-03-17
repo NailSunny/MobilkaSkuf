@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:mess_scuf/database/auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ChatsPage extends StatefulWidget {
-  const ChatsPage({super.key});
+class ChatsListPage extends StatefulWidget {
+  const ChatsListPage({super.key});
 
   @override
-  State<ChatsPage> createState() => _ChatsPageState();
+  State<ChatsListPage> createState() => _ChatsListPageState();
 }
 
-class _ChatsPageState extends State<ChatsPage> {
+class _ChatsListPageState extends State<ChatsListPage> {
   int _selectedIndex = 0;
-
+  AuthService authService = AuthService();
   final List<Map<String, dynamic>> chats = [
     {"name": "Наиль", "lastMessage": "Привет!", "time": "12:30", "read": true},
     {
@@ -26,6 +29,33 @@ class _ChatsPageState extends State<ChatsPage> {
       "read": false
     },
   ];
+
+  String? _userPhotoUrl;
+
+  @override
+  void initState() {
+    _getUserData();
+    super.initState();
+  }
+
+  Future<void> _getUserData() async {
+    try {
+      final userDoc = await Supabase.instance.client
+          .from('users')
+          .select()
+          .eq('id', Supabase.instance.client.auth.currentUser!.id.toString())
+          .single();
+
+      if (mounted) {
+        setState(() {
+          _userPhotoUrl = userDoc['photo'];
+        });
+      }
+    } catch (e) {
+      print('Ошибка загрузки данных: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,9 +63,17 @@ class _ChatsPageState extends State<ChatsPage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 16,
-              child: Icon(Icons.person),
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+              child: CircleAvatar(
+                radius: 16,
+                backgroundImage: _userPhotoUrl != null
+                    ? NetworkImage(_userPhotoUrl!)
+                    : NetworkImage(
+                        "https://ztrjqqmeduxbamylhfjf.supabase.co/storage/v1/object/public/storages//default_person.jpg"),
+              ),
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.02,
@@ -48,6 +86,15 @@ class _ChatsPageState extends State<ChatsPage> {
             onPressed: () {},
             icon: Icon(Icons.edit),
           ),
+          IconButton(
+            onPressed: () async {
+              await authService.logOut();
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setBool('isLoggedIn', false);
+              Navigator.popAndPushNamed(context, '/');
+            },
+            icon: Icon(Icons.logout),
+          )
         ],
       ),
       body: Center(

@@ -8,6 +8,7 @@ class RecoveryPage extends StatefulWidget {
 }
 
 class _RecoveryPageState extends State<RecoveryPage> {
+  TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +22,7 @@ class _RecoveryPageState extends State<RecoveryPage> {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.85,
               child: TextField(
+                controller: emailController,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
                   labelText: 'Email',

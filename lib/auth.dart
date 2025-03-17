@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mess_scuf/database/auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -8,6 +10,9 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+  AuthService authService = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +32,7 @@ class _AuthPageState extends State<AuthPage> {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.85,
               child: TextField(
+                controller: emailController,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
                   labelText: 'Email',
@@ -54,6 +60,7 @@ class _AuthPageState extends State<AuthPage> {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.85,
               child: TextField(
+                controller: passController,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
                     labelText: 'Password',
@@ -96,7 +103,22 @@ class _AuthPageState extends State<AuthPage> {
               height: MediaQuery.of(context).size.height * 0.06,
               width: MediaQuery.of(context).size.width * 0.85,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  if (emailController.text.isEmpty ||
+                      passController.text.isEmpty) {
+                    print("Поля пустые");
+                  } else {
+                    var user = await authService.signIn(
+                        emailController.text, passController.text);
+                    if (user != null) {
+                      final prefs = await SharedPreferences.getInstance();
+                      await prefs.setBool('isLoggedIn', true);
+                      Navigator.popAndPushNamed(context, '/chats');
+                    } else {
+                      print("Пользователь не существует");
+                    }
+                  }
+                },
                 child: Text("Sign In"),
               ),
             ),

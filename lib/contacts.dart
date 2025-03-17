@@ -23,9 +23,14 @@ class _ContactsPageState extends State<ContactsPage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            CircleAvatar(
+            InkWell(
+            onTap: () {
+            Navigator.pushNamed(context, '/profile');
+            },           
+            child:  CircleAvatar(
               radius: 16,
-              child: Icon(Icons.person),
+              backgroundImage: NetworkImage("https://ztrjqqmeduxbamylhfjf.supabase.co/storage/v1/object/public/storages//default_person.jpg"),
+            ),
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.02,
